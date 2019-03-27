@@ -1,0 +1,88 @@
+
+syntax = "proto3";
+
+package bootstrap_message;
+
+message BootstrapMessage {
+    enum Type {
+        INIT = 0;
+        CONFIG = 1;
+        TABLE = 3;
+        // CONFIG_ACK = 2;
+        BROADCAST = 5;
+        PULL_LOG = 7;
+        PUSH_LOG = 8;
+    }
+    
+    Type type = 1;
+    
+    Init init = 2;
+    Config config = 3;
+    Table table = 5;
+    // ConfigAck config_ack = 4;
+    Broadcast broadcast = 7;
+    PullLog pull_log = 9;
+    PushLog push_log = 10;
+
+}
+
+message Init {
+    uint32 bootstrap_port = 1;
+    uint32 broadcast_port = 2;
+}
+
+message Config {
+    // Experiment info
+    string run_id = 1;
+    
+    enum EvalType {
+        HGFRR = 0;
+        KADEMLIA = 1;
+    }
+    EvalType eval_type = 2;
+
+    // Experiment-specific config
+    uint32 node_id = 3;
+
+    // uint32 table_size = 4;
+    // repeated uint32 table_ids = 5;
+    // repeated string table_ips = 6;
+    // repeated uint32 table_ports = 7;
+
+    uint32 num_nodes_in_dist = 20;
+    uint32 num_cnodes_in_dist = 21;
+    uint32 num_nodes_in_city = 22;
+    uint32 num_cnodes_in_city = 23;
+    uint32 num_nodes_in_state = 24;
+    uint32 num_cnodes_in_state = 25;
+    uint32 num_nodes_in_country = 26;
+    uint32 num_cnodes_in_country = 27;
+    uint32 num_nodes_in_continent = 28;
+    uint32 num_cnodes_in_continent = 29;
+    uint32 num_continents = 30;
+}
+
+message Table {
+    uint32 table_size = 1;
+    
+    repeated uint32 table_ids = 2;
+    repeated string table_ips = 3;
+    repeated uint32 table_ports = 4;
+    
+    bool is_end = 5;
+
+}
+
+message Broadcast {
+    uint32 workload_size = 1;
+}
+
+message PullLog {
+    string run_id = 1;
+}
+
+message PushLog {
+    string node_id = 1;
+    string run_id = 2;
+    string log = 3;
+}
